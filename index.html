@@ -1,46 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <!-- <title>AnanasDocumentSign system</title> -->
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>AnanasDocumentSign system</title>
     <link rel="stylesheet" href="style.css" />
-    <script
-      src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
-      type="application/javascript"
-    ></script>
-
-    <!-- <script src="script.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1/web3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   </head>
   <body>
     <h1>AnanasDocumentSign system</h1>
-    <p>
-      <label for="file-input">Upload Document:</label>
-      <input type="file" id="file-input" />
-    </p>
-    <p>
-      <label for="hash-output">Document Hash:</label>
-      <input type="text" id="hash-output" readonly />
-    </p>
-    <p>
-      <label for="signer-input">Add signer:</label>
-      <input type="text" id="signer-input" />
-      <button id="add-signer-button">Add signer</button>
-    </p>
-    <p>
-      <label for="signer-list">Signers:</label>
-      <textarea id="signer-list" readonly></textarea>
-    </p>
-    <p>
-      <label for="name-input">Name:</label>
-      <input type="text" id="name-input" />
-      <button id="sign-button">Sign</button>
-    </p>
-    <p>
-      <button id="check-signatures-button">Check signatures</button>
-    </p>
+    <input type="file" id="uploadDocument" />
+    <p>Document hash: <span id="documentHash"></span></p>
+    <input type="text" id="signerAddress" placeholder="Enter signer address" />
+    <button id="addSigner">Add signer</button>
+    <p>Signers:</p>
+    <textarea id="signerList" rows="5" cols="50" readonly></textarea>
+    <button id="signDocument">Sign document</button>
+    <p id="signStatus"></p>
+    <button id="checkSignatures">Check signatures</button>
+    <p>Signatures:</p>
+    <textarea id="signatureList" rows="5" cols="50" readonly></textarea>
+
     <script src="script.js"></script>
   </body>
 </html>

@@ -25,3 +25,13 @@ button {
   width: 600px;
   box-sizing: border-box;
 }
+
+#signer-input {
+  width: 450px;
+  box-sizing: border-box;
+}
+
+#signer-list {
+  width: 470px;
+  box-sizing: border-box;
+}
