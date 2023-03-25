@@ -32,6 +32,24 @@ const abi = [
         type: "bytes32",
       },
       {
+        internalType: "address[]",
+        name: "signerAddresses",
+        type: "address[]",
+      },
+    ],
+    name: "saveSigners",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "documentHash",
+        type: "bytes32",
+      },
+      {
         internalType: "bytes",
         name: "signatureHash",
         type: "bytes",
@@ -40,6 +58,97 @@ const abi = [
     name: "signDocument",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "documentSignatures",
+    outputs: [
+      {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "documentHash",
+        type: "bytes32",
+      },
+      {
+        internalType: "address",
+        name: "signer",
+        type: "address",
+      },
+    ],
+    name: "getSigner",
+    outputs: [
+      {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "documentHash",
+        type: "bytes32",
+      },
+    ],
+    name: "getSigners",
+    outputs: [
+      {
+        internalType: "address[]",
+        name: "",
+        type: "address[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "signedDocuments",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -68,11 +177,11 @@ const abi = [
         type: "bool",
       },
     ],
-    stateMutability: "view",
+    stateMutability: "pure",
     type: "function",
   },
 ];
-const contractAddress = "0xa45A1689d97767CB6c700D67bCf7d94352834BBD";
+const contractAddress = "0x180c653f6b6C94604e51A63BEA06a04d544Ecc46";
 
 let documentHash;
 let signers = new Set();
@@ -109,6 +218,19 @@ async function getDocumentHash(file) {
   });
 }
 
+async function loadSigners(documentHash) {
+  const paddedDocumentHash = web3.utils.padLeft("0x" + documentHash, 64);
+
+  for (const signer of signers) {
+    const signature = await contract.methods
+      .getSigner(paddedDocumentHash, signer)
+      .call();
+    if (signature !== "0x") {
+      document.getElementById("signatureList").value += `${signer}\n`;
+    }
+  }
+}
+
 document
   .getElementById("uploadDocument")
   .addEventListener("change", async (event) => {
@@ -116,6 +238,21 @@ document
     if (file) {
       documentHash = await getDocumentHash(file);
       document.getElementById("documentHash").innerText = documentHash;
+
+      // Загрузите подписантов с блокчейна, если они существуют
+      try {
+        const paddedDocumentHash = web3.utils.padLeft("0x" + documentHash, 64);
+        const blockchainSigners = await contract.methods
+          .getSigners(paddedDocumentHash)
+          .call();
+
+        // Обновите список подписантов в интерфейсе
+        signers = new Set(blockchainSigners);
+        document.getElementById("signerList").value =
+          Array.from(signers).join("\n");
+      } catch (err) {
+        console.error(err);
+      }
     }
   });
 
@@ -130,33 +267,23 @@ document.getElementById("addSigner").addEventListener("click", () => {
   }
 });
 
-// document.getElementById("signDocument").addEventListener("click", async () => {
-//   const signerAddress = document.getElementById("signerAddress").value;
-//   const documentHash = document.getElementById("documentHash").innerText;
-//   const paddedDocumentHash = web3.utils.padLeft("0x" + documentHash, 64);
-//   const documentHashBytes = web3.utils.hexToBytes(paddedDocumentHash);
+document.getElementById("saveSigners").addEventListener("click", async () => {
+  const documentHash = document.getElementById("documentHash").innerText;
+  const paddedDocumentHash = web3.utils.padLeft("0x" + documentHash, 64);
+  const signerAddresses = Array.from(signers);
 
-//   if (web3.utils.isAddress(signerAddress)) {
-//     try {
-//       // Sign the document hash
-//       const signature = await web3.eth.sign(paddedDocumentHash, signerAddress);
-//       const signatureBytes = "0x" + signature.slice(2);
+  try {
+    // Вызов функции смарт-контракта для сохранения подписантов
+    const tx = await contract.methods
+      .saveSigners(paddedDocumentHash, signerAddresses)
+      .send({ from: userAccount });
 
-//       // Send the transaction
-//       const tx = await contract.methods
-//         .signDocument(documentHashBytes, signatureBytes)
-//         .send({ from: signerAddress });
-
-//       document.getElementById("signStatus").innerText = "Document signed";
-//     } catch (err) {
-//       console.error(err);
-//       document.getElementById("signStatus").innerText =
-//         "Error signing the document";
-//     }
-//   } else {
-//     document.getElementById("signStatus").innerText = "Invalid signer address";
-//   }
-// });
+    document.getElementById("signStatus").innerText = "Signers saved";
+  } catch (err) {
+    console.error(err);
+    document.getElementById("signStatus").innerText = "Error saving signers";
+  }
+});
 
 document.getElementById("signDocument").addEventListener("click", async () => {
   const signerAddress = document.getElementById("signerAddress").value;
@@ -168,15 +295,9 @@ document.getElementById("signDocument").addEventListener("click", async () => {
       // Sign the document hash
       const signature = await web3.eth.sign(paddedDocumentHash, signerAddress);
 
-      // Encode the parameters for the signDocument function
-      const encodedParameters = web3.eth.abi.encodeParameters(
-        ["bytes32", "bytes"],
-        [paddedDocumentHash, signature]
-      );
-
       // Send the transaction
       const tx = await contract.methods
-        .signDocument(paddedDocumentHash, encodedParameters)
+        .signDocument(paddedDocumentHash, signature)
         .send({ from: signerAddress });
 
       document.getElementById("signStatus").innerText = "Document signed";
