@@ -3,27 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AnanasDocumentSign system</title>
+    <title>AnanasSmartDocumentSign System</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1/web3.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"></script>
   </head>
   <body>
-    <h1>AnanasDocumentSign system</h1>
-    <input type="file" id="uploadDocument" />
-    <p>Document hash: <span id="documentHash"></span></p>
-    <input type="text" id="signerAddress" placeholder="Enter signer address" />
-    <button id="addSigner">Add signer</button>
-    <p>Signers:</p>
-    <textarea id="signerList" rows="5" cols="50" readonly></textarea>
-    <p></p>
-    <button id="saveSigners">Save signers to contract</button>
-    <p></p>
-    <button id="signDocument">Sign document</button>
-    <p id="signStatus"></p>
-    <button id="checkSignatures">Check signatures</button>
-    <p>Signatures:</p>
-    <textarea id="signatureList" rows="5" cols="50" readonly></textarea>
+    <h1>AnanasSmartDocumentSign System</h1>
+    <input type="file" id="file-input" />
+    <div id="file-hash"></div>
+    <button id="check-signatures">Проверить подписи</button>
+    <div id="signatures"></div>
+    <br />
+    <input
+      type="text"
+      id="signers-input"
+      placeholder="Адреса подписантов через запятую"
+    />
+    <button id="add-signer">Добавить подписанта</button>
+    <div id="add-signer-status"></div>
+    <br />
+    <button id="sign-document">Подписать документ</button>
+    <div id="sign-document-status"></div>
 
     <script src="script.js"></script>
   </body>
