@@ -1,8 +1,16 @@
 const contractABI = [
   {
     inputs: [
-      { internalType: "bytes32", name: "_documentHash", type: "bytes32" },
-      { internalType: "address[]", name: "_signers", type: "address[]" },
+      {
+        internalType: "bytes32",
+        name: "_documentHash",
+        type: "bytes32",
+      },
+      {
+        internalType: "address[]",
+        name: "_signers",
+        type: "address[]",
+      },
     ],
     name: "addDocument",
     outputs: [],
@@ -10,45 +18,72 @@ const contractABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
-    name: "documents",
-    outputs: [
-      { internalType: "bytes32", name: "documentHash", type: "bytes32" },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
-      { internalType: "bytes32", name: "_documentHash", type: "bytes32" },
-    ],
-    name: "getSignersStatus",
-    outputs: [
-      { internalType: "address[]", name: "", type: "address[]" },
-      { internalType: "bool[]", name: "", type: "bool[]" },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "bytes32", name: "_documentHash", type: "bytes32" },
+      {
+        internalType: "bytes32",
+        name: "_documentHash",
+        type: "bytes32",
+      },
     ],
     name: "signDocument",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    name: "documents",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "documentHash",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "_documentHash",
+        type: "bytes32",
+      },
+    ],
+    name: "getSignersStatus",
+    outputs: [
+      {
+        internalType: "address[]",
+        name: "",
+        type: "address[]",
+      },
+      {
+        internalType: "bool[]",
+        name: "",
+        type: "bool[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
 ];
-const contractAddress = "0x66D00146E6B72F9dC84161cF905663E14c06a132";
+const contractAddress = "0x74168548C66272B7B6c56732DA04d63868dBC66A";
 
-// Подключение ethers и настройка MetaMask
-const provider = new ethers.providers.Web3Provider(window.ethereum);
+// для binance testnet
+const provider = new ethers.providers.Web3Provider(window.ethereum, 97);
+
+// для локального ганаш
+// const provider = new ethers.providers.Web3Provider(window.ethereum);
+
 let signer;
 let contractInstance;
-
-// const contractAddress = "DEPLOYED_CONTRACT_ADDRESS";
-// const contractABI = ABI_FROM_SOLIDITY_CONTRACT;
 
 async function init() {
   await window.ethereum.enable();
