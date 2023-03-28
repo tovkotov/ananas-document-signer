@@ -1,10 +1,39 @@
 body {
+  background-color: #f4f4f4;
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
   text-align: center;
-  font-family: Verdana;
+  margin-bottom: 20px;
+}
+
+.input-section,
+.button-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 label {
-  color: #6f6e77;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
 input {
@@ -12,26 +41,42 @@ input {
   background: #ffffff;
   border: 2px solid #dcdbdd;
   border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
 }
 
 button {
   padding: 12px 16px;
-  margin: 5px 0px 0px 0px;
-  background: #8cd812;
-  border-radius: 12px;
+  background: #4b6ec4;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out;
 }
 
-#hash-output {
-  width: 600px;
-  box-sizing: border-box;
+button:hover {
+  background-color: #3a58a0;
 }
 
-#signer-input {
-  width: 450px;
-  box-sizing: border-box;
+#file-hash {
+  font-size: 12px;
+  font-style: italic;
+  margin-top: 8px;
+  color: #999;
 }
 
-#signer-list {
-  width: 470px;
-  box-sizing: border-box;
+#signatures {
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+#add-signer-status,
+#sign-document-status {
+  font-size: 14px;
+  margin-top: 8px;
+  color: #ff0000;
 }

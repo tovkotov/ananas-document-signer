@@ -8,23 +8,34 @@
     <script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"></script>
   </head>
   <body>
-    <h1>AnanasSmartDocumentSign System</h1>
-    <input type="file" id="file-input" />
-    <div id="file-hash"></div>
-    <button id="check-signatures">Проверить подписи</button>
-    <div id="signatures"></div>
-    <br />
-    <input
-      type="text"
-      id="signers-input"
-      placeholder="Адреса подписантов через запятую"
-    />
-    <button id="add-signer">Добавить подписанта</button>
-    <div id="add-signer-status"></div>
-    <br />
-    <button id="sign-document">Подписать документ</button>
-    <div id="sign-document-status"></div>
-
+    <div class="container">
+      <h1>AnanasSmartDocumentSign System</h1>
+      <div class="input-section">
+        <label for="file-input">Выберите файл:</label>
+        <input type="file" id="file-input" />
+        <div id="file-hash"></div>
+      </div>
+      <div class="button-section">
+        <button id="check-signatures">Проверить подписи</button>
+        <div id="signatures"></div>
+      </div>
+      <div class="input-section">
+        <label for="signers-input">Адреса подписантов:</label>
+        <input
+          type="text"
+          id="signers-input"
+          placeholder="Адреса через запятую"
+        />
+      </div>
+      <div class="button-section">
+        <button id="add-signer">Добавить подписанта</button>
+        <div id="add-signer-status"></div>
+      </div>
+      <div class="button-section">
+        <button id="sign-document">Подписать документ</button>
+        <div id="sign-document-status"></div>
+      </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
